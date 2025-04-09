@@ -1,0 +1,63 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Logs and temp files
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Node modules (if frontend uses npm)
+node_modules/
+
+# Frontend build
+dist/
+build/
+*.map
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# SQLite / test db
+*.sqlite3
+*.db
+
+# UPI, secrets & sensitive config
+*.key
+*.pem
+*.crt
+*.json
+secrets.env
