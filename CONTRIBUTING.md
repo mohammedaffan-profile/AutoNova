@@ -30,7 +30,7 @@ Before opening a PR, test your code thoroughly. We're aiming for smooth, secure 
 - Use comments where necessary.
 
 ## Need Help?
-Open an issue or contact [Mohammed Affan](mailto:mohammedaffan0090@gmail.com) (replace with your actual contact).
+Open an issue or contact [Mohammed Affan](mailto:mohammedaffan0090@gmail.com).
 
 Let’s build smart hospitality together ✨  
 — Team AutoNova
