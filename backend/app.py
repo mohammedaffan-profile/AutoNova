@@ -1,4 +1,6 @@
 from flask import Flask, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+import os
 
 app = Flask(__name__)
 
@@ -46,3 +48,21 @@ if __name__ == '__main__':
 @app.route('/')
 def index():
     return jsonify({"message": "Welcome to AutoNova!"})
+
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+db = SQLAlchemy(app)
+
+class Guest(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+
+@app.route('/')
+def index():
+    guests = Guest.query.all()
+    return str(guests)
+
+if __name__ == "__main__":
+    app.run(debug=True)
