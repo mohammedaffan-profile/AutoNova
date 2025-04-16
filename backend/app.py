@@ -4,24 +4,34 @@ import os
 
 app = Flask(__name__)
 
-# Dummy room data
+# Load config from environment
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'default_secret')
+
+# Initialize DB
+db = SQLAlchemy(app)
+
+# Dummy room data (just in-memory for now)
 available_rooms = {
     "101": {"status": "available"},
     "102": {"status": "booked"},
     "103": {"status": "available"}
 }
 
-# Health check route
+# --- Routes ---
+
+@app.route("/")
+def index():
+    return jsonify({"message": "Welcome to AutoNova!"})
+
 @app.route("/health", methods=["GET"])
 def health_check():
     return jsonify({"status": "ok", "message": "AutoNova backend is running"}), 200
 
-# View available rooms
 @app.route('/rooms', methods=['GET'])
 def get_rooms():
     return jsonify(available_rooms)
 
-# Book a room
 @app.route('/book', methods=['POST'])
 def book_room():
     data = request.get_json()
@@ -32,37 +42,25 @@ def book_room():
         return jsonify({"message": "Room booked!", "pin": "1234", "guests": guests})
     return jsonify({"error": "Room unavailable"}), 400
 
-# Upload ID verification
 @app.route('/upload-id', methods=['POST'])
 def upload_id():
     return jsonify({"message": "ID verified successfully"})
 
-# Payment simulation
 @app.route('/pay', methods=['POST'])
 def payment():
     return jsonify({"message": "Payment successful (via UPI)", "upi_id": "upi@autonova"})
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@app.route('/guests', methods=['GET'])
+def show_guests():
+    guests = Guest.query.all()
+    return jsonify([{"id": g.id, "name": g.name} for g in guests])
 
-@app.route('/')
-def index():
-    return jsonify({"message": "Welcome to AutoNova!"})
-
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-db = SQLAlchemy(app)
+# --- Models ---
 
 class Guest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
 
-@app.route('/')
-def index():
-    guests = Guest.query.all()
-    return str(guests)
-
+# --- Entry Point ---
 if __name__ == "__main__":
     app.run(debug=True)
