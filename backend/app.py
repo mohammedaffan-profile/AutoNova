@@ -4,14 +4,15 @@ import os
 
 app = Flask(__name__)
 
-# Load config from environment
+# Correct: Load from DATABASE_URL and assign to SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'default_secret')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize DB
 db = SQLAlchemy(app)
 
-# Dummy room data (just in-memory for now)
+# Dummy room data
 available_rooms = {
     "101": {"status": "available"},
     "102": {"status": "booked"},
@@ -19,7 +20,6 @@ available_rooms = {
 }
 
 # --- Routes ---
-
 @app.route("/")
 def index():
     return jsonify({"message": "Welcome to AutoNova!"})
@@ -56,7 +56,6 @@ def show_guests():
     return jsonify([{"id": g.id, "name": g.name} for g in guests])
 
 # --- Models ---
-
 class Guest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
